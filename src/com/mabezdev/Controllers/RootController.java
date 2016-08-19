@@ -101,7 +101,7 @@ public class RootController implements Initializable, Stoppable{
 
     @FXML
     private void openDB(){
-        File toOpen = fileChooser.showOpenDialog((Stage) rootPane.getScene().getWindow());
+        File toOpen = fileChooser.showOpenDialog((rootPane.getScene().getWindow()));
         System.out.println("Opening DB from: "+toOpen.getAbsolutePath());
         ObservableList<Link> links = null;
         try {
@@ -118,10 +118,10 @@ public class RootController implements Initializable, Stoppable{
 
     @FXML
     private void saveDB(){
-        File toSave = fileChooser.showSaveDialog((Stage) rootPane.getScene().getWindow());
+        File toSave = fileChooser.showSaveDialog(rootPane.getScene().getWindow());
         System.out.println("Saving DB to: "+toSave.getAbsolutePath());
         try {
-            LinkDataBaseHandler.saveDataBase(toSave.getAbsolutePath() + ".sav", linkArray);
+            LinkDataBaseHandler.saveDataBase(toSave.getAbsolutePath() + ".ldb", linkArray);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -129,7 +129,7 @@ public class RootController implements Initializable, Stoppable{
 
     @FXML
     private void importLinks(){
-
+        // open dialog choose where to import from (Chrome, Firefox, Safari, or open file chooser dialog)
     }
 
     @FXML
