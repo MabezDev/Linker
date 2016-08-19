@@ -18,6 +18,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 import javafx.util.Callback;
 
@@ -56,7 +57,7 @@ public class RootController implements Initializable, Stoppable{
 
         BookmarkParser chrome = new ChomeParser();
         System.out.println("File open: "+chrome.open(Constants.GOOLE_IMPORT_MAC));
-        chrome.parseLinks();
+        linkArray.addAll(chrome.parseLinks());
     }
 
     private void initializeLinkList() {
@@ -86,11 +87,25 @@ public class RootController implements Initializable, Stoppable{
 
             @Override
             public void changed(ObservableValue<? extends Link> observable, Link oldValue, Link newValue) {
-                // Your action here
                 System.out.println(newValue.getDisplayName()+" has a url : " + newValue.getUrl());
                 openLink(newValue.getUrl());
             }
         });
+    }
+
+    private void goForwards(){
+
+    }
+
+    private void goBack(){
+        final WebHistory history = wEngine.getHistory();
+        ObservableList<WebHistory.Entry> entries = history.getEntries();
+        int currentPageIndex = history.getCurrentIndex();
+        //go to previious
+    }
+
+    private void refresh(){
+        wEngine.reload();
     }
 
     private void openLink(String url) {
