@@ -12,6 +12,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -32,6 +34,9 @@ public class RootController implements Initializable, Stoppable{
 
     @FXML
     private SplitPane splitPane;
+
+    @FXML
+    private TextField searchBar;
 
     @FXML
     private ListView<Link> linkListView;
@@ -55,6 +60,7 @@ public class RootController implements Initializable, Stoppable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeLinkList();
+        initializeSearch();
 
         wEngine = webView.getEngine();
         wEngine.load(currentURL);
@@ -62,6 +68,38 @@ public class RootController implements Initializable, Stoppable{
         //BookmarkParser chrome = new ChomeParser();
         //chrome.open(Constants.GOOLE_IMPORT_MAC);
         //linkArray.addAll(chrome.parseLinks());
+    }
+
+    private void initializeSearch() {
+        searchBar.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(!newValue.equals("")){
+                    ObservableList<Link> searched = FXCollections.observableArrayList();
+                    for(Link linkData : linkArray){
+                        if(linkData.getDisplayName().toLowerCase().contains(newValue.toLowerCase())){
+                            searched.add(linkData);
+                        }
+                    }
+                    if(searched.size() > 0){
+                        //System.out.println("Search yielded "+searched.size()+ " result(s)");
+                        linkListView.setItems(null);
+                        linkListView.setItems(searched);
+
+                    } else {
+                        linkListView.setItems(null);//show no items
+                    }
+                    //search through all all names in array and match them using a letter difference algorithm
+                    // set the search data as the listviews data
+                } else {
+                    // if search is nothing display all like normal
+                    linkListView.setItems(null);
+                    linkListView.setItems(linkArray);
+
+                }
+
+            }
+        });
     }
 
     private void initializeLinkList() {
@@ -75,10 +113,13 @@ public class RootController implements Initializable, Stoppable{
 
                     @Override
                     protected void updateItem(Link t, boolean bln) {
-                        super.updateItem(t, bln);
                         if (t != null) {
                             setText(t.getDisplayName());
+                            super.updateItem(t,bln);
+                        } else {
+                            setText(null);
                         }
+
                     }
 
                 };
