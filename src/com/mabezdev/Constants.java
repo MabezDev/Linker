@@ -5,5 +5,5 @@ package com.mabezdev;
  */
 public class Constants {
 
-    public static final String GOOLE_IMPORT_MAC = "~/Library/Application Support/Google/Chrome/Default/Bookmarks";
+    public static final String GOOLE_IMPORT_MAC = System.getProperty("user.home")+"/Library/Application Support/Google/Chrome/Default/Bookmarks";
 }

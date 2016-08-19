@@ -1,7 +1,11 @@
 package com.mabezdev.Controllers;
 
+import com.mabezdev.Constants;
 import com.mabezdev.Interfaces.Stoppable;
 import com.mabezdev.Models.Link;
+import com.mabezdev.Util.Parsers.BookmarkParser;
+import com.mabezdev.Util.Parsers.ChomeParser;
+import com.sun.deploy.net.protocol.chrome.ChromeURLConnection;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -49,6 +53,10 @@ public class RootController implements Initializable, Stoppable{
 
         wEngine = webView.getEngine();
         wEngine.load("http://www.google.com");
+
+        BookmarkParser chrome = new ChomeParser();
+        System.out.println("File open: "+chrome.open(Constants.GOOLE_IMPORT_MAC));
+        chrome.parseLinks();
     }
 
     private void initializeLinkList() {
