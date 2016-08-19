@@ -49,7 +49,6 @@ public class ChomeParser extends BookmarkParser {
             while(iterator.hasNext()){
                 String child = iterator.next();
                 if(!child.equals("sync_transaction_version")) {
-                    System.out.println("CHILD: " + child);
                     links.addAll(getFromChildren((JSONObject) roots.get(child)));
                 }
             }
@@ -58,6 +57,7 @@ public class ChomeParser extends BookmarkParser {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        System.out.println("Links successfully parsed!");
         return links;
     }
 
@@ -67,15 +67,12 @@ public class ChomeParser extends BookmarkParser {
         Iterator<JSONObject> iterator = children.iterator();
         while(iterator.hasNext()){
             JSONObject item = iterator.next();
-            //System.out.println("Name: "+item.get("name"));
-            //System.out.println("URL: "+item.get("url"));
-            //System.out.println("TYPE: "+item.get("type"));
             if(item.get("type").equals("folder")){
-                System.out.println("Folder detected, grabbing links...");
                 links.addAll(getFromChildren(item));
-                System.out.println("Done!");
-            } else {
+            } else if(item.get("type").equals("url")){
                 links.add(new Link((String) item.get("name"), (String) item.get("url")));
+            } else {
+                System.out.println("Invalid type: "+item.get("type")+" not importing.");
             }
         }
         return links;

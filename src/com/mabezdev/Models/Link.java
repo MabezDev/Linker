@@ -1,9 +1,11 @@
 package com.mabezdev.Models;
 
+import java.io.Serializable;
+
 /**
  * Created by Mabez on 19/08/2016.
  */
-public class Link {
+public class Link implements Serializable{
 
     private String displayName;
     private String url;
